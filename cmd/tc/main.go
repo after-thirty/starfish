@@ -69,15 +69,8 @@ func main() {
 					return nil
 				},
 			},
-			{
-				Name:  "version",
-				Usage: "show version",
-				Action: func(context *cli.Context) error {
-					fmt.Print(version.Print(appName))
-					return nil
-				},
-			},
 		},
+		Version: version.Print(appName),
 	}
 
 	err := app.Run(os.Args)

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/gotrx/starfish/common/version"
 	"io"
 	"io/ioutil"
 	"os"
@@ -49,7 +50,7 @@ func GetDefaultClientConfig(applicationID string) ClientConfig {
 		ApplicationID:                applicationID,
 		TransactionServiceGroup:      "127.0.0.1:8091",
 		EnableClientBatchSendRequest: false,
-		StarfishVersion:              "1.1.0",
+		StarfishVersion:              version.Version,
 		GettyConfig:                  GetDefaultGettyConfig(),
 		TMConfig:                     GetDefaultTmConfig(),
 	}
