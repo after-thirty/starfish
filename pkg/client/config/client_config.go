@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/gotrx/starfish/common/version"
 	"io"
 	"io/ioutil"
 	"os"
@@ -21,8 +22,8 @@ var clientConfig *ClientConfig
 type ClientConfig struct {
 	ApplicationID                string      `yaml:"application_id" json:"application_id,omitempty"`
 	TransactionServiceGroup      string      `yaml:"transaction_service_group" json:"transaction_service_group,omitempty"`
-	EnableClientBatchSendRequest bool        `yaml:"enable-rpc_client-batch-send-request" json:"enable-rpc_client-batch-send-request,omitempty"`
-	StarfishVersion                 string      `yaml:"starfish_version" json:"starfish_version,omitempty"`
+	EnableClientBatchSendRequest bool        `yaml:"enable-client-batch-send-request" json:"enable-client-batch-send-request,omitempty"`
+	StarfishVersion              string      `yaml:"starfish_version" json:"starfish_version,omitempty"`
 	GettyConfig                  GettyConfig `yaml:"getty" json:"getty,omitempty"`
 
 	TMConfig TMConfig `yaml:"tm" json:"tm,omitempty"`
@@ -49,7 +50,7 @@ func GetDefaultClientConfig(applicationID string) ClientConfig {
 		ApplicationID:                applicationID,
 		TransactionServiceGroup:      "127.0.0.1:8091",
 		EnableClientBatchSendRequest: false,
-		StarfishVersion:                 "1.1.0",
+		StarfishVersion:              version.Version,
 		GettyConfig:                  GetDefaultGettyConfig(),
 		TMConfig:                     GetDefaultTmConfig(),
 	}

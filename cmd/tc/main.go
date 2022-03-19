@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gotrx/starfish/common/version"
 	"os"
 	"strconv"
 
@@ -20,6 +21,10 @@ import (
 	"github.com/gotrx/starfish/pkg/tc/server"
 	"github.com/gotrx/starfish/pkg/util/log"
 	"github.com/gotrx/starfish/pkg/util/uuid"
+)
+
+var (
+	appName = "starfish"
 )
 
 func main() {
@@ -65,6 +70,7 @@ func main() {
 				},
 			},
 		},
+		Version: version.Print(appName),
 	}
 
 	err := app.Run(os.Args)
