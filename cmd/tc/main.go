@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gotrx/starfish/common/version"
 	"os"
 	"strconv"
 
@@ -20,6 +21,10 @@ import (
 	"github.com/gotrx/starfish/pkg/tc/server"
 	"github.com/gotrx/starfish/pkg/util/log"
 	"github.com/gotrx/starfish/pkg/util/uuid"
+)
+
+var (
+	appName = "starfish"
 )
 
 func main() {
@@ -61,6 +66,14 @@ func main() {
 
 					srv := server.NewServer()
 					srv.Start(fmt.Sprintf(":%s", conf.Port))
+					return nil
+				},
+			},
+			{
+				Name:  "version",
+				Usage: "show version",
+				Action: func(context *cli.Context) error {
+					fmt.Print(version.Print(appName))
 					return nil
 				},
 			},
