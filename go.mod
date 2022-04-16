@@ -3,10 +3,10 @@ module github.com/transaction-mesh/starfish
 go 1.14
 
 require (
-	github.com/apache/dubbo-getty v1.4.7
+	github.com/apache/dubbo-getty v1.4.8
 	github.com/creasty/defaults v1.5.2
 	github.com/denisenkom/go-mssqldb v0.0.0-20191124224453-732737034ffd // indirect
-	github.com/dubbogo/gost v1.11.20
+	github.com/dubbogo/gost v1.11.23
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/go-xorm/xorm v0.7.9
 	github.com/imdario/mergo v0.3.12
