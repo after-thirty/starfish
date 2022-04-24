@@ -8,7 +8,7 @@ import (
 import (
 	getty "github.com/apache/dubbo-getty"
 
-	"github.com/pkg/errors"
+	perrors "github.com/pkg/errors"
 
 	"vimagination.zapto.org/byteio"
 )
@@ -41,6 +41,7 @@ import (
  * </p>
  * https://github.com/starfish/starfish/issues/893
  */
+
 const (
 	StarfishV1PackageHeaderReservedLength = 16
 )
@@ -51,10 +52,11 @@ var (
 )
 
 var (
-	ErrNotEnoughStream = errors.New("packet stream is not enough")
-	ErrTooLargePackage = errors.New("package length is exceed the getty package's legal maximum length.")
-	ErrInvalidPackage  = errors.New("invalid rpc package")
-	ErrIllegalMagic    = errors.New("package magic is not right.")
+	ErrHeaderNotEnough = perrors.New("header buffer too short")
+	ErrNotEnoughStream = perrors.New("packet stream is not enough")
+	ErrTooLargePackage = perrors.New("package length is exceed the getty package's legal maximum length.")
+	ErrInvalidPackage  = perrors.New("invalid rpc package")
+	ErrIllegalMagic    = perrors.New("package magic is not right")
 )
 
 type RpcPackageHandler struct{}
@@ -76,7 +78,7 @@ type StarfishV1PackageHeader struct {
 func (h *StarfishV1PackageHeader) Unmarshal(buf *bytes.Buffer) (int, error) {
 	bufLen := buf.Len()
 	if bufLen < StarfishV1PackageHeaderReservedLength {
-		return 0, ErrNotEnoughStream
+		return 0, ErrHeaderNotEnough
 	}
 
 	// magic
@@ -89,6 +91,7 @@ func (h *StarfishV1PackageHeader) Unmarshal(buf *bytes.Buffer) (int, error) {
 	if h.Magic0 != protocal.MAGIC_CODE_BYTES[0] || h.Magic1 != protocal.MAGIC_CODE_BYTES[1] {
 		return 0, ErrIllegalMagic
 	}
+
 	// version
 	if err := binary.Read(buf, binary.BigEndian, &(h.Version)); err != nil {
 		return 0, err
@@ -121,10 +124,17 @@ func (h *StarfishV1PackageHeader) Unmarshal(buf *bytes.Buffer) (int, error) {
 	}
 	// todo meta map
 	if h.HeadLength > StarfishV1PackageHeaderReservedLength {
-		headMapLength := h.HeadLength - StarfishV1PackageHeaderReservedLength
-		h.Meta = headMapDecode(buf.Bytes()[:headMapLength])
+		headMapLength := int(h.HeadLength - StarfishV1PackageHeaderReservedLength)
+		if buf.Len() < headMapLength {
+			return 0, ErrHeaderNotEnough
+		}
+		metaData := buf.Next(headMapLength)
+		h.Meta = headMapDecode(metaData)
 	}
 	h.BodyLength = h.TotalLength - uint32(h.HeadLength)
+	if buf.Len() < int(h.BodyLength) {
+		return int(h.TotalLength), ErrNotEnoughStream
+	}
 
 	return int(h.TotalLength), nil
 }
@@ -134,11 +144,14 @@ func (p *RpcPackageHandler) Read(ss getty.Session, data []byte) (interface{}, in
 	var header StarfishV1PackageHeader
 
 	buf := bytes.NewBuffer(data)
-	_, err := header.Unmarshal(buf)
+	l, err := header.Unmarshal(buf)
 	if err != nil {
+		if err == ErrHeaderNotEnough {
+			return nil, 0, nil // getty case 2
+		}
 		if err == ErrNotEnoughStream {
-			// getty case2
-			return nil, 0, nil
+			// getty case3
+			return nil, l, nil
 		}
 		// getty case1
 		return nil, 0, err

@@ -2,8 +2,8 @@
 
 ### feature list
 - [X] Memory Session Manager
-- [X] DB Session Manager (only support mysql) 
-- [ ] RAFT Session Manager  
+- [X] DB Session Manager (only support mysql)
+- [ ] RAFT Session Manager
 - [X] Metrics Collector
 - [X] TM
 - [X] RM TCC
@@ -14,7 +14,7 @@
 
 ### mysql driver
 
-mysql driver 集成 starfish 的工作已经完成，该 driver 基于 https://github.com/go-sql-driver/mysql 开发，开发者可以使用该 driver 对接到各种 orm 中，使用更方便。driver 的项目地址：https://github.com/opentrx/mysql 。 参考 demo：https://github.com/opentrx/starfish-go-samples 。
+mysql driver 集成 starfish 的工作已经完成，该 driver 基于 https://github.com/go-sql-driver/mysql 开发，开发者可以使用该 driver 对接到各种 orm 中，使用更方便。driver 的项目地址：https://github.com/transaction-mesh/mysql 。 参考 demo：https://github.com/transaction-mesh/starfish-samples 。
 
 ### 运行 TC
 

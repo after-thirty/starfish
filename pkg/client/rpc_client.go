@@ -5,15 +5,19 @@ import (
 	"net"
 
 	getty "github.com/apache/dubbo-getty"
+
 	gxsync "github.com/dubbogo/gost/sync"
 	"github.com/nacos-group/nacos-sdk-go/common/logger"
-
 	"github.com/transaction-mesh/starfish/pkg/base/extension"
 	"github.com/transaction-mesh/starfish/pkg/base/getty/readwriter"
+
 	_ "github.com/transaction-mesh/starfish/pkg/base/registry/etcdv3"
+
 	_ "github.com/transaction-mesh/starfish/pkg/base/registry/file"
+
 	_ "github.com/transaction-mesh/starfish/pkg/base/registry/nacos"
 	"github.com/transaction-mesh/starfish/pkg/client/config"
+
 	getty2 "github.com/transaction-mesh/starfish/pkg/client/rpc_client"
 	"github.com/transaction-mesh/starfish/pkg/util/log"
 )
