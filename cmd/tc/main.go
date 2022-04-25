@@ -19,7 +19,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/transaction-mesh/starfish/common/version"
 	"os"
 	"strconv"
 )

@@ -31,7 +31,6 @@ import (
 )
 
 import (
-	"github.com/transaction-mesh/starfish/common/version"
 	"github.com/transaction-mesh/starfish/pkg/base/config"
 	"github.com/transaction-mesh/starfish/pkg/base/config_center"
 	"github.com/transaction-mesh/starfish/pkg/base/extension"
